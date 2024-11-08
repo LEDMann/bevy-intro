@@ -3,7 +3,7 @@ use bevy::prelude::*;
 fn main() {
     App::new()
         .add_systems(Startup, add_people)
-        .add_systems(Update, (hw, greet_people))
+        .add_systems(Update, (hw, (update_people, greet_people).chain()))
         .run();
 }
 
@@ -26,5 +26,14 @@ fn add_people(mut commands: Commands) {
 fn greet_people(query: Query<&Name, With<Person>>) {
     for name in &query {
         println!("hello {}!", name.0);
+    }
+}
+
+fn update_people(mut query: Query<&mut Name, With<Person>>) {
+    for mut name in &mut query {
+        if name.0 == "Zumbu" {
+            name.0 = "Ubmuz".to_string();
+            break;
+        }
     }
 }
