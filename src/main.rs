@@ -3,9 +3,17 @@ use bevy::prelude::*;
 fn main() {
     App::new()
         .add_plugins(DefaultPlugins)
-        .add_systems(Startup, add_people)
-        .add_systems(Update, (hw, (update_people, greet_people).chain()))
+        .add_plugins(HelloPlugin)
         .run();
+}
+
+pub struct HelloPlugin;
+
+impl Plugin for HelloPlugin {
+    fn build(&self, app: &mut App) {
+        app.add_systems(Startup, add_people);
+        app.add_systems(Update, (hw, (update_people, greet_people).chain()));
+    }
 }
 
 fn hw() {
